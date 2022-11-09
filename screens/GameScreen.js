@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Alert,  } from 'react-native'
+import { View, Text, StyleSheet, Alert, FlatList,  } from 'react-native'
 import Card from '../components/Card'
 import InstructionText from '../components/InstructionText'
 import NumberContainer from '../components/NumberContainer'
 import PrimaryButton from '../components/PrimaryButton'
 import Title from '../components/Title'
 import  {Ionicons}   from "@expo/vector-icons" 
+import GuessLog from '../components/GuessLog'
 
 
 
@@ -57,8 +58,13 @@ const GameScreen = ({userNumber,gameOver}) => {
      }
      const newRandNumber = generateRandomNumber(minBoundary,maxBoundary,currentGuess)
      setCurrentGuess(newRandNumber)
-     setGuessRounds(prev => [guessRounds,...prev])
+     setGuessRounds(prev => [newRandNumber,...prev])
     }
+
+   
+    const guessListLength = guessRounds.length
+
+
 
   return (
     <View style={styles.screen}>
@@ -82,7 +88,14 @@ const GameScreen = ({userNumber,gameOver}) => {
             </View>
         </Card>
         <View>
-         <Text>Log Rounds</Text>
+          {/* {guessRounds.map(guess=>(
+            
+          ))} */}
+          <FlatList 
+           data={guessRounds}
+            renderItem={(itemData)=><GuessLog roundNumber={guessListLength - itemData.index} guess={itemData.item}  /> } 
+            keyExtractor={(item)=>item}
+            />
         </View>
     </View>
   )
