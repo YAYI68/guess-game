@@ -1,15 +1,20 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
+import PrimaryButton from '../components/PrimaryButton'
 import Title from '../components/Title'
 import { Colors } from '../constants/colors'
 
-function GameOverScreen() {
+function GameOverScreen(roundsNumber, userNumber, onStartNewGame) {
   return (
-    <View>
+    <View style={styles.container}>
       <Title>GAME OVER</Title>
       <View style={styles.imageContainer}>
-      <Image source={require('../assets/images/success.png')} />
+      <Image style={styles.image} source={require('../assets/images/success.png')} />
       </View>
+      <Text style={styles.summaryText}>
+        Your phone needed <Text style={styles.hightLight}>X</Text> rounds to guess  the number <Text style={styles.hightLight}>Y.</Text>
+    </Text>
+    <PrimaryButton  onPress={onStartNewGame}>Start New Game</PrimaryButton>
     </View>
 
   )
@@ -18,14 +23,37 @@ function GameOverScreen() {
 export default GameOverScreen
 
 const styles = StyleSheet.create({
+    container:{
+      
+        flex:1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding:24,
+    },
     imageContainer:{
-        width:400,
-        height:400,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width:300,
+        height:300,
         borderRadius:200,
         borderWidth:3,
         borderColor:Colors.primary800,
         overflow:'hidden',
         margin:36,
-
+    },
+    image:{
+        width: '100%',
+        height: '100%',
+    },
+    summaryText:{
+        fontFamily:'open-sans',
+        fontSize:24,
+        textAlign: 'center',
+        marginVertical:24,
+    },
+    hightLight:{
+        fontFamily:'open-sans-bold',
+        color:Colors.primary500,
     }
+
 })
