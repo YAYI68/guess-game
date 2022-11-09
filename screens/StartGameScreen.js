@@ -1,23 +1,56 @@
-import React from 'react'
-import { StyleSheet, TextInput, View } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, TextInput, View,Alert,Text } from 'react-native'
+import Card from '../components/Card';
+import InstructionText from '../components/InstructionText';
 import PrimaryButton from '../components/PrimaryButton'
+import Title from '../components/Title';
+import { Colors } from '../constants/colors';
 
-function StartGameScreen() {
+function StartGameScreen({onPickedNum}) {
+   const [enterNum,setEnterNum] = useState('');
+
+   const numInpputHandler = (enterText)=>{
+    setEnterNum(enterText)
+   }
+
+   const resetInpput = ()=>{
+    setEnterNum("")
+   }
+
+   const confirmNumber = ()=>{
+    const chosenNumber = parseInt(enterNum)
+
+    if(isNaN(chosenNumber) || chosenNumber <=0 || chosenNumber >=99 ){
+       Alert.alert('Invalid number',
+        "Number must be between 1 and 99",
+        [{text: 'Okay', style:'destructive', onPress:resetInpput}]
+       )
+        return;
+    }
+    onPickedNum(chosenNumber)
+    console.log({chosenNumber})
+   }
   return (
-      <View style={styles.inputContainer}>
+      <View style={styles.rootContainer}>
+        <Title>Guess My Number</Title>
+      <Card>
+        <InstructionText>Enter a Number</InstructionText>
         <TextInput style={styles.numberInput}
          maxLength={2}
          keyboardType="number-pad" 
          autoCorrect={false} 
+         value={enterNum}
+         onChangeText={numInpputHandler}
          autoCapitalize="none" />
         <View style={styles.buttonContainer}>
             <View style={styles.button}>
              <PrimaryButton >Reset</PrimaryButton>
             </View>
             <View style={styles.button}>
-              <PrimaryButton >Confirm</PrimaryButton>
+              <PrimaryButton onPress={confirmNumber} >Confirm</PrimaryButton>
             </View>
         </View> 
+      </Card>
       </View>
   )
 }
@@ -25,26 +58,18 @@ function StartGameScreen() {
 export default StartGameScreen
 
 const styles = StyleSheet.create({
-    inputContainer: {
+    rootContainer:{
+        flex:1,
         marginTop:100,
-        padding:16,
-        backgroundColor:"#3b021f",
-        borderRadius:10,
-        marginHorizontal:24,
-        elevation:4,
-        shadowColor:"black",
-        shadowOffset:{width:0, height:2},
-        shadowRadius:6,
-        shadowOpacity:0.25,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center'
     },
+   
     numberInput:{
        height:50,
        fontSize:32,
-       borderBottomColor:'#ddb52f',
+       borderBottomColor:Colors.secondary500,
        borderBottomWidth:2,
-       color:'#ddb52f',
+       color:Colors.secondary500,
        marginVertical:8,
        fontWeight:'bold',
        width:50,
@@ -57,6 +82,7 @@ const styles = StyleSheet.create({
     },
     button:{
         flex:1,
-    }
+    },
+   
 
 })
