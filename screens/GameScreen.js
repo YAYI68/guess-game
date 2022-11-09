@@ -93,7 +93,7 @@ const GameScreen = ({userNumber,gameOver}) => {
           ))} */}
           <FlatList 
            data={guessRounds}
-            renderItem={(itemData)=><GuessLog roundNumber={guessListLength - itemData.index} guess={itemData.item}  /> } 
+            renderItem={(itemData)=>(<GuessLog roundNumber={guessListLength - itemData.index} guess={itemData.item}  />) } 
             keyExtractor={(item)=>item}
             />
         </View>
