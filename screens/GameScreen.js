@@ -31,7 +31,7 @@ const GameScreen = ({userNumber,gameOver}) => {
   useEffect(()=>{
     if (currentGuess === userNumber){
       // gameIsOver
-      gameOver(true)
+      gameOver(guessRounds.length)
     }
   },[currentGuess,userNumber,gameOver])
 
@@ -87,7 +87,7 @@ const GameScreen = ({userNumber,gameOver}) => {
               </View>
             </View>
         </Card>
-        <View>
+        <View style={styles.listContainer}>
           {/* {guessRounds.map(guess=>(
             
           ))} */}
@@ -116,5 +116,9 @@ const styles = StyleSheet.create({
     },
     button:{
       flex:1,
+    },
+    listContainer:{
+     padding:16,
+     flex:1,
     }
 })
