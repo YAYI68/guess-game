@@ -2,14 +2,15 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet,ImageBackground,SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import StartGameScreen from './screens/StartGameScreen';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import GameScreen from './screens/GameScreen';
 import { Colors } from './constants/colors';
 import GameOverScreen from './screens/GameOverScreen';
 import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
-AppLoading
+import * as SplashScreen from 'expo-splash-screen';
 
+
+SplashScreen.preventAutoHideAsync();
 export default function App() {
    const [ userNumber, setUserNumber] = useState();
    const [ gameIsOver, setGameIsOver ] = useState(true);
@@ -19,9 +20,24 @@ export default function App() {
     'open-sans-bold':require('./assets/fonts/OpenSans-Bold.ttf')
   })
 
-  if(!fontsLoaded){
-    return <AppLoading />
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
   }
+
+  
 
    const pickNumberHandler =(pickedNum)=>{
     setUserNumber(pickedNum)
@@ -45,7 +61,7 @@ export default function App() {
       style={styles.screenContainer} 
       imageStyle={styles.bgImage}
       >
-        <SafeAreaView style={styles.screenContainer}>  
+        <SafeAreaView onLayout={onLayoutRootView} style={styles.screenContainer}>  
         {screen}
         </SafeAreaView> 
      </ImageBackground>
