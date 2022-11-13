@@ -51,6 +51,7 @@ export default function App() {
     setGuessRounds(roundsNumber)
    }
 
+   
    const startNewGameHandler = () => {
     setUserNumber(null)
     setGuessRounds(0);
